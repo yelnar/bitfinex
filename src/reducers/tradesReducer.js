@@ -1,6 +1,6 @@
 import types from '../actions/actionTypes';
 
-export default function tradesWidgetReducer(state = [], action) {
+export default function tradesReducer(state = [], action) {
   switch (action.type) {
 
     case types.INIT_TRADES:

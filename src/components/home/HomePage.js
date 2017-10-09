@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/widgetsActions';
-import OrderBooksWidget from '../widgets/OrderBooksWidget';
-import TradeHistoryWidget from "../widgets/TradeHistoryWidget";
+import * as actions from '../../actions/mainActions';
+import BooksWidget from '../widgets/BooksWidget';
+import TradesWidget from "../widgets/TradesWidget";
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -10,15 +10,15 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { trades, books } = this.props;
+    const { trades, booksBids, booksAsks } = this.props;
 
     return (
       <div>
         <h1>Home Page</h1>
         <button onClick={this.props.closeConnection}>Close Connection</button>
         <button onClick={this.props.reConnect}>Reconnect</button>
-        <OrderBooksWidget books={books} />
-        <TradeHistoryWidget trades={trades}/>
+        <BooksWidget booksBids={booksBids} booksAsks={booksAsks} />
+        <TradesWidget trades={trades}/>
       </div>
     );
   }
@@ -26,15 +26,17 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   trades: PropTypes.array.isRequired,
-  books: PropTypes.array.isRequired,
+  booksBids: PropTypes.object.isRequired,
+  booksAsks: PropTypes.object.isRequired,
   closeConnection: PropTypes.func.isRequired,
   reConnect: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     trades: state.trades,
-    books: state.books
+    booksBids: state.booksBids,
+    booksAsks: state.booksAsks
   };
 }
 
@@ -42,7 +44,6 @@ function mapDispatchToProps(dispatch) {
   return {
     closeConnection: () => dispatch(actions.closeConnection()),
     reConnect: () => dispatch(actions.reConnect())
-
   };
 }
 

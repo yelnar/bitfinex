@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import trades from './tradesWidgetReducer';
-import books from './booksWidgetReducer';
+import trades from './tradesReducer';
+import booksBids from './booksBidsReducer';
+import booksAsks from './booksAsksReducer';
 
 const rootReducer = combineReducers({
   trades,
-  books
+  booksBids,
+  booksAsks
 });
 
 export default rootReducer;

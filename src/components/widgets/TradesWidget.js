@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
 
-const TradeHistoryWidget = (trades) => {
+const TradesWidget = (props) => {
   return (
     <div>
       <h1>Trade History Widget</h1>
@@ -14,7 +14,7 @@ const TradeHistoryWidget = (trades) => {
           </tr>
         </thead>
         <tbody>
-          {trades.trades.map((trade, i) =>
+          {props.trades.map((trade, i) =>
             <tr key={i}>
               <td>{moment(trade[1]).format("HH:mm:ss")}</td>
               <td>{trade[3]}</td>
@@ -27,8 +27,8 @@ const TradeHistoryWidget = (trades) => {
   );
 };
 
-TradeHistoryWidget.propTypes = {
+TradesWidget.propTypes = {
   trades: PropTypes.array.isRequired
 };
 
-export default TradeHistoryWidget;
+export default TradesWidget;
