@@ -26,8 +26,8 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   trades: PropTypes.array.isRequired,
-  booksBids: PropTypes.object.isRequired,
-  booksAsks: PropTypes.object.isRequired,
+  booksBids: PropTypes.array.isRequired,
+  booksAsks: PropTypes.array.isRequired,
   closeConnection: PropTypes.func.isRequired,
   reConnect: PropTypes.func.isRequired
 };

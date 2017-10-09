@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import * as booksActions from "../actions/booksActions";
 import * as tradesActions from "../actions/tradesActions";
 
@@ -43,8 +42,8 @@ const setSocketListeners = (socket, store) => {
           BOOKS[side][book.price] = book;
         });
 
-        sortAndDispatch(BOOKS, store, booksActions.initBooksBids(BOOKS.bids));
-        sortAndDispatch(BOOKS, store, booksActions.initBooksAsks(BOOKS.asks));
+        sortAndDispatch(BOOKS, 'bids', store, booksActions.initBooksBids);
+        sortAndDispatch(BOOKS, 'asks', store, booksActions.initBooksAsks);
       }
       else if (msg.event === 'subscribed') {
         if (msg.channel === 'trades') {
@@ -64,12 +63,12 @@ const setSocketListeners = (socket, store) => {
           if (book.amount > 0) {
             if (BOOKS['bids'][book.price]) {
               delete BOOKS['bids'][book.price];
-              sortAndDispatch(BOOKS, store, booksActions.updateBooksBids(BOOKS.bids));
+              sortAndDispatch(BOOKS, 'bids', store, booksActions.updateBooksBids);
             }
           } else if (book.amount < 0) {
             if (BOOKS['asks'][book.price]) {
               delete BOOKS['asks'][book.price];
-              sortAndDispatch(BOOKS, store, booksActions.updateBooksAsks(BOOKS.asks));
+              sortAndDispatch(BOOKS, 'asks', store, booksActions.updateBooksAsks);
             }
           }
         } else {
@@ -77,9 +76,9 @@ const setSocketListeners = (socket, store) => {
           book.amount = Math.abs(book.amount);
           BOOKS[side][book.price] = book;
           if (side === 'bids') {
-            sortAndDispatch(BOOKS, store, booksActions.updateBooksBids(BOOKS.bids));
+            sortAndDispatch(BOOKS, 'bids', store, booksActions.updateBooksBids);
           } else {
-            sortAndDispatch(BOOKS, store, booksActions.updateBooksAsks(BOOKS.asks));
+            sortAndDispatch(BOOKS, 'asks', store, booksActions.updateBooksAsks);
           }
         }
       }
@@ -90,22 +89,24 @@ const setSocketListeners = (socket, store) => {
   };
 };
 
-function sortAndDispatch(BOOK, store, action) {
-  // _.each(['bids', 'asks'], function(side) {
-  //   let sbook = BOOK[side];
-  //   let bprices = Object.keys(sbook);
-  //
-  //   let prices = bprices.sort(function(a, b) {
-  //     if (side === 'bids') {
-  //       return +a >= +b ? -1 : 1
-  //     } else {
-  //       return +a <= +b ? -1 : 1
-  //     }
-  //   });
-  //
-  //   BOOK[side] = prices;
-  // })
-  store.dispatch(action);
+function sortAndDispatch(BOOKS, side, store, action) {
+  let keys = Object.keys(BOOKS[side]);
+  let sorted = [];
+  let total = 0;
+
+  if (side === 'bids') {
+    keys.sort((a, b) => +a >= +b ? -1 : 1);
+  } else {
+    keys.sort((a, b) => +a <= +b ? -1 : 1);
+  }
+
+  for (let i = 0; i < keys.length; i++) {
+    let key = keys[i];
+    total += BOOKS[side][key].amount;
+    sorted[i] = Object.assign({}, BOOKS[side][key], {total: total});
+  }
+
+  store.dispatch(action(sorted));
 }
 
 function openWebsocket(store) {

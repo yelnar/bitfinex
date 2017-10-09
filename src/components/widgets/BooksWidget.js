@@ -16,12 +16,12 @@ const BooksWidget = (props) => {
             </tr>
             </thead>
             <tbody>
-            {Object.keys(props.booksBids).map(key =>
+            {props.booksBids.map((book, key) =>
               <tr key={key}>
-                <td>{props.booksBids[key].count}</td>
-                <td>{props.booksBids[key].amount}</td>
-                <td>{props.booksBids[key].amount}</td>
-                <td>{props.booksBids[key].price}</td>
+                <td>{book.count}</td>
+                <td>{book.amount}</td>
+                <td>{book.total}</td>
+                <td>{book.price}</td>
               </tr>)
             }
             </tbody>
@@ -38,12 +38,12 @@ const BooksWidget = (props) => {
             </tr>
             </thead>
             <tbody>
-            {Object.keys(props.booksAsks).map(key =>
+            {props.booksAsks.map((book, key) =>
               <tr key={key}>
-                <td>{props.booksAsks[key].price}</td>
-                <td>{props.booksAsks[key].amount}</td>
-                <td>{props.booksAsks[key].amount}</td>
-                <td>{props.booksAsks[key].count}</td>
+                <td>{book.price}</td>
+                <td>{book.total}</td>
+                <td>{book.amount}</td>
+                <td>{book.count}</td>
               </tr>)
             }
             </tbody>
@@ -55,8 +55,8 @@ const BooksWidget = (props) => {
 };
 
 BooksWidget.propTypes = {
-  booksBids: PropTypes.object.isRequired,
-  booksAsks: PropTypes.object.isRequired
+  booksBids: PropTypes.array.isRequired,
+  booksAsks: PropTypes.array.isRequired
 };
 
 export default BooksWidget;
