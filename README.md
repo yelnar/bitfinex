@@ -1,4 +1,5 @@
-# bitfinex
-### Run in development mode:
-1. **npm install**
-2. **npm start**
+# Bitfinex
+
+* Setup environment: **npm install**
+* Run in development mode: **npm start**
+* Run in production mode: **npm run build**
